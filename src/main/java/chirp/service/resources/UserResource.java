@@ -42,7 +42,7 @@ public class UserResource {
 	@Path("{username}")
 	@Produces(APPLICATION_JSON)
 	public UserRepresentation getUser(@PathParam("username") String username) {
-		return new UserRepresentation(repository.getUser(username));
+		return new UserRepresentation(repository.getUser(username), false);
 	}
 
 	@GET
@@ -50,7 +50,7 @@ public class UserResource {
 	public Collection<UserRepresentation> getUsers() {
 		Collection<UserRepresentation> rep = new LinkedList<UserRepresentation>();
 		for (User user : repository.getUsers()) {
-			rep.add(new UserRepresentation(user));
+			rep.add(new UserRepresentation(user, true));
 		}
 		return rep;
 	}

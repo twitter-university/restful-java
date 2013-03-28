@@ -7,9 +7,9 @@ public class PostRepresentation {
 	private final String timestamp;
 	private final String content;
 
-	public PostRepresentation(Post post) {
+	public PostRepresentation(Post post, boolean summary) {
 		timestamp = post.getTimestamp().toString();
-		content = post.getContent();
+		content = summary ? null : post.getContent();
 	}
 
 	public String getTimestamp() {

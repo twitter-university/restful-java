@@ -45,7 +45,7 @@ public class PostResource {
 	@Produces(APPLICATION_JSON)
 	public PostRepresentation getPost(@PathParam("username") String username, @PathParam("timestamp") String timestamp) {
 		User user = repository.getUser(username);
-		return new PostRepresentation(user.getPost(new Timestamp(timestamp)));
+		return new PostRepresentation(user.getPost(new Timestamp(timestamp)), false);
 	}
 
 	@GET
@@ -54,7 +54,7 @@ public class PostResource {
 		User user = repository.getUser(username);
 		Collection<PostRepresentation> rep = new LinkedList<PostRepresentation>();
 		for (Post post : user.getPosts()) {
-			rep.add(new PostRepresentation(post));
+			rep.add(new PostRepresentation(post, true));
 		}
 		return rep;
 	}

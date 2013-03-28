@@ -7,9 +7,9 @@ public class UserRepresentation {
 	private final String username;
 	private final String realname;
 
-	public UserRepresentation(User user) {
+	public UserRepresentation(User user, boolean summary) {
 		username = user.getUsername();
-		realname = user.getRealname();
+		realname = summary ? null : user.getRealname();
 	}
 
 	public String getUsername() {
