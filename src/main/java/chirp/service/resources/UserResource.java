@@ -1,8 +1,9 @@
 package chirp.service.resources;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
@@ -37,9 +38,15 @@ public class UserResource {
 
 	@GET
 	@Path("{username}")
-	@Produces(APPLICATION_XML)
+	@Produces(APPLICATION_JSON)
 	public User getUser(@PathParam("username") String username) {
 		return repository.getUser(username);
+	}
+
+	@GET
+	@Produces(APPLICATION_JSON)
+	public Collection<User> getUsers() {
+		return repository.getUsers();
 	}
 
 }
