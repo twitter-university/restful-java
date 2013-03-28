@@ -51,10 +51,11 @@ public class UserResourceTest extends ResourceTest {
 	@Test
 	public void getUser() {
 		User user = getUserRepository().createUser("testuser", "Test User");
-		UserRepresentation rep = userResource.path("testuser").get(UserRepresentation.class);
+		WebResource resource = userResource.path("testuser");
+		UserRepresentation rep = resource.get(UserRepresentation.class);
 
-		// username and realname must survive
-		assertEquals(user.getUsername(), rep.getUsername());
+		// self-link and realname must survive
+		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(user.getRealname(), rep.getRealname());
 	}
 }

@@ -49,10 +49,11 @@ public class PostResourceTest extends ResourceTest {
 	public void getPost() {
 		User user = getUserRepository().createUser("testuser", "Test User");
 		Post post = user.createPost("Test Post");
-		PostRepresentation rep = postResource.path("testuser").path(post.getTimestamp().toString()).get(PostRepresentation.class);
+		WebResource resource = postResource.path("testuser").path(post.getTimestamp().toString());
+		PostRepresentation rep = resource.get(PostRepresentation.class);
 
-		// timestamp and content must survive
-		assertEquals(post.getTimestamp().toString(), rep.getTimestamp());
+		// self-link and content must survive
+		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(post.getContent(), rep.getContent());
 	}
 

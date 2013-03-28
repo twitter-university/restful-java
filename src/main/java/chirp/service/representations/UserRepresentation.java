@@ -1,11 +1,19 @@
 package chirp.service.representations;
 
+import java.net.URI;
+
 import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import chirp.model.User;
 
+import com.sun.jersey.server.linking.Ref;
+
 public class UserRepresentation {
+
+	@Ref("user/{username}")
+	private URI self;
 
 	private final String username;
 	private final String realname;
@@ -17,12 +25,18 @@ public class UserRepresentation {
 
 	@JsonCreator
 	public UserRepresentation(
-			@JsonProperty("username") String username,
+			@JsonProperty("self") URI self,
 			@JsonProperty("realname") String realname) {
-		this.username = username;
+		this.self = self;
+		this.username = null;
 		this.realname = realname;
 	}
 
+	public URI getSelf() {
+		return self;
+	}
+
+	@JsonIgnore
 	public String getUsername() {
 		return username;
 	}
