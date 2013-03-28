@@ -8,8 +8,8 @@ public class HelloResourceTest extends ResourceTest {
 
 	@Test
 	public void helloResourceMustSayHello() {
-		String hello = resource().path("hello").get(String.class);
-		assertEquals("Hello!", hello);
+		String hello = resource().path("hello").queryParam("name", "REST").get(String.class);
+		assertEquals("Hello, REST!", hello);
 	}
 
 }
