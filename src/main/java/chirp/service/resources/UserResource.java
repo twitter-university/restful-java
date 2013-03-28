@@ -3,8 +3,6 @@ package chirp.service.resources;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
@@ -16,8 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import chirp.model.User;
 import chirp.model.UserRepository;
+import chirp.service.representations.UserCollectionRepresentation;
 import chirp.service.representations.UserRepresentation;
 
 @Path("user")
@@ -47,12 +45,8 @@ public class UserResource {
 
 	@GET
 	@Produces(APPLICATION_JSON)
-	public Collection<UserRepresentation> getUsers() {
-		Collection<UserRepresentation> rep = new LinkedList<UserRepresentation>();
-		for (User user : repository.getUsers()) {
-			rep.add(new UserRepresentation(user, true));
-		}
-		return rep;
+	public UserCollectionRepresentation getUsers() {
+		return new UserCollectionRepresentation(repository.getUsers());
 	}
 
 }

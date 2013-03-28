@@ -3,8 +3,6 @@ package chirp.service.resources;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
-import java.util.Collection;
-import java.util.LinkedList;
 
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
@@ -20,6 +18,7 @@ import chirp.model.Post;
 import chirp.model.Timestamp;
 import chirp.model.User;
 import chirp.model.UserRepository;
+import chirp.service.representations.PostCollectionRepresentation;
 import chirp.service.representations.PostRepresentation;
 
 @Path("post/{username}")
@@ -50,13 +49,9 @@ public class PostResource {
 
 	@GET
 	@Produces(APPLICATION_JSON)
-	public Collection<PostRepresentation> getPosts(@PathParam("username") String username) {
+	public PostCollectionRepresentation getPosts(@PathParam("username") String username) {
 		User user = repository.getUser(username);
-		Collection<PostRepresentation> rep = new LinkedList<PostRepresentation>();
-		for (Post post : user.getPosts()) {
-			rep.add(new PostRepresentation(post, true));
-		}
-		return rep;
+		return new PostCollectionRepresentation(user, user.getPosts());
 	}
 	
 }

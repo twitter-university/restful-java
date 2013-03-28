@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import chirp.model.Post;
 import chirp.model.User;
+import chirp.service.representations.PostCollectionRepresentation;
 import chirp.service.representations.PostRepresentation;
 
 import com.sun.jersey.api.client.ClientResponse;
@@ -55,6 +56,18 @@ public class PostResourceTest extends ResourceTest {
 		// self-link and content must survive
 		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(post.getContent(), rep.getContent());
+	}
+
+	@Test
+	public void getPosts() {
+		User user = getUserRepository().createUser("testuser", "Test User");
+		Post post = user.createPost("Test Post");
+		WebResource resource = postResource.path("testuser");
+		PostCollectionRepresentation rep = resource.get(PostCollectionRepresentation.class);
+
+		// self-links must survive
+		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
+		assertEquals(resource.path(post.getTimestamp().toString()).getURI().getPath(), rep.getPosts().iterator().next().getSelf().getPath());
 	}
 
 }
