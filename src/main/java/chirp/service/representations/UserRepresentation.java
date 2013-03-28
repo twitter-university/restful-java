@@ -1,5 +1,8 @@
 package chirp.service.representations;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import chirp.model.User;
 
 public class UserRepresentation {
@@ -10,6 +13,14 @@ public class UserRepresentation {
 	public UserRepresentation(User user, boolean summary) {
 		username = user.getUsername();
 		realname = summary ? null : user.getRealname();
+	}
+
+	@JsonCreator
+	public UserRepresentation(
+			@JsonProperty("username") String username,
+			@JsonProperty("realname") String realname) {
+		this.username = username;
+		this.realname = realname;
 	}
 
 	public String getUsername() {

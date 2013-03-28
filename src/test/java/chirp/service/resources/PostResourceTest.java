@@ -1,14 +1,16 @@
 package chirp.service.resources;
 
 import static com.sun.jersey.api.client.ClientResponse.Status.CREATED;
-import static com.sun.jersey.api.client.ClientResponse.Status.*;
+import static com.sun.jersey.api.client.ClientResponse.Status.NOT_FOUND;
 import static junit.framework.Assert.assertEquals;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
 
+import chirp.model.Post;
 import chirp.model.User;
+import chirp.service.representations.PostRepresentation;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -41,6 +43,17 @@ public class PostResourceTest extends ResourceTest {
 
 		// status must equal NOT FOUND
 		assertEquals(NOT_FOUND.getStatusCode(), response.getStatus());
+	}
+
+	@Test
+	public void getPost() {
+		User user = getUserRepository().createUser("testuser", "Test User");
+		Post post = user.createPost("Test Post");
+		PostRepresentation rep = postResource.path("testuser").path(post.getTimestamp().toString()).get(PostRepresentation.class);
+
+		// timestamp and content must survive
+		assertEquals(post.getTimestamp().toString(), rep.getTimestamp());
+		assertEquals(post.getContent(), rep.getContent());
 	}
 
 }

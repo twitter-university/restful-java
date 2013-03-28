@@ -1,11 +1,15 @@
 package chirp.service.resources;
 
-import static com.sun.jersey.api.client.ClientResponse.Status.*;
+import static com.sun.jersey.api.client.ClientResponse.Status.CREATED;
+import static com.sun.jersey.api.client.ClientResponse.Status.FORBIDDEN;
 import static junit.framework.Assert.assertEquals;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import org.junit.Test;
+
+import chirp.model.User;
+import chirp.service.representations.UserRepresentation;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -44,4 +48,13 @@ public class UserResourceTest extends ResourceTest {
 		assertEquals(FORBIDDEN.getStatusCode(), response.getStatus());
 	}
 
+	@Test
+	public void getUser() {
+		User user = getUserRepository().createUser("testuser", "Test User");
+		UserRepresentation rep = userResource.path("testuser").get(UserRepresentation.class);
+
+		// username and realname must survive
+		assertEquals(user.getUsername(), rep.getUsername());
+		assertEquals(user.getRealname(), rep.getRealname());
+	}
 }

@@ -1,5 +1,8 @@
 package chirp.service.representations;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import chirp.model.Post;
 
 public class PostRepresentation {
@@ -10,6 +13,14 @@ public class PostRepresentation {
 	public PostRepresentation(Post post, boolean summary) {
 		timestamp = post.getTimestamp().toString();
 		content = summary ? null : post.getContent();
+	}
+
+	@JsonCreator
+	public PostRepresentation(
+			@JsonProperty("timestamp") String timestamp,
+			@JsonProperty("content") String content) {
+		this.timestamp = timestamp;
+		this.content = content;
 	}
 
 	public String getTimestamp() {
