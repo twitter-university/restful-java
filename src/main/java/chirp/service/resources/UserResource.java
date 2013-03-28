@@ -4,6 +4,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import chirp.model.User;
 import chirp.model.UserRepository;
+import chirp.service.representations.UserRepresentation;
 
 @Path("user")
 public class UserResource {
@@ -39,14 +41,18 @@ public class UserResource {
 	@GET
 	@Path("{username}")
 	@Produces(APPLICATION_JSON)
-	public User getUser(@PathParam("username") String username) {
-		return repository.getUser(username);
+	public UserRepresentation getUser(@PathParam("username") String username) {
+		return new UserRepresentation(repository.getUser(username));
 	}
 
 	@GET
 	@Produces(APPLICATION_JSON)
-	public Collection<User> getUsers() {
-		return repository.getUsers();
+	public Collection<UserRepresentation> getUsers() {
+		Collection<UserRepresentation> rep = new LinkedList<UserRepresentation>();
+		for (User user : repository.getUsers()) {
+			rep.add(new UserRepresentation(user));
+		}
+		return rep;
 	}
 
 }
