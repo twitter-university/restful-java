@@ -14,6 +14,7 @@ import chirp.service.representations.UserRepresentation;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.header.LinkHeaders;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class UserResourceTest extends ResourceTest {
@@ -53,21 +54,33 @@ public class UserResourceTest extends ResourceTest {
 	public void getUser() {
 		User user = getUserRepository().createUser("testuser", "Test User");
 		WebResource resource = userResource.path("testuser");
-		UserRepresentation rep = resource.get(UserRepresentation.class);
+		ClientResponse response = resource.get(ClientResponse.class);
+		UserRepresentation rep = response.getEntity(UserRepresentation.class);
 
 		// self-link and realname must survive
 		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(user.getRealname(), rep.getRealname());
+
+		// response must contain expected link headers
+		LinkHeaders links = response.getLinks();
+		assertEquals("/user/testuser", links.getLink("self").getUri().getPath());
+		assertEquals("/user", links.getLink("up").getUri().getPath());
+		assertEquals("/post/testuser", links.getLink("related").getUri().getPath());
 	}
 
 	@Test
 	public void getUsers() {
 		getUserRepository().createUser("testuser", "Test User");
-		UserCollectionRepresentation rep = userResource.get(UserCollectionRepresentation.class);
+		ClientResponse response = userResource.get(ClientResponse.class);
+		UserCollectionRepresentation rep = response.getEntity(UserCollectionRepresentation.class);
 
 		// self-links must survive
 		assertEquals(userResource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(userResource.path("testuser").getURI().getPath(), rep.getUsers().iterator().next().getSelf().getPath());
+
+		// response must contain expected link headers
+		LinkHeaders links = response.getLinks();
+		assertEquals("/user", links.getLink("self").getUri().getPath());
 	}
 
 }

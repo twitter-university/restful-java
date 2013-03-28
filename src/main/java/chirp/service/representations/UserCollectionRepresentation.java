@@ -9,8 +9,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import chirp.model.User;
 
+import com.sun.jersey.server.linking.Link;
 import com.sun.jersey.server.linking.Ref;
 
+@Link(value = @Ref("user"), rel = "self")
 public class UserCollectionRepresentation {
 
 	@Ref("user")

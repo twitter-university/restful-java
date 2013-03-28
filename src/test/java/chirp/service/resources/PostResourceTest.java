@@ -15,6 +15,7 @@ import chirp.service.representations.PostRepresentation;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.header.LinkHeaders;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class PostResourceTest extends ResourceTest {
@@ -51,11 +52,18 @@ public class PostResourceTest extends ResourceTest {
 		User user = getUserRepository().createUser("testuser", "Test User");
 		Post post = user.createPost("Test Post");
 		WebResource resource = postResource.path("testuser").path(post.getTimestamp().toString());
-		PostRepresentation rep = resource.get(PostRepresentation.class);
+		ClientResponse response = resource.get(ClientResponse.class);
+		PostRepresentation rep = response.getEntity(PostRepresentation.class);
 
 		// self-link and content must survive
 		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(post.getContent(), rep.getContent());
+		
+		// response must contain expected link headers
+		LinkHeaders links = response.getLinks();
+		assertEquals("/post/testuser/" + post.getTimestamp(), links.getLink("self").getUri().getPath());
+		assertEquals("/post/testuser", links.getLink("up").getUri().getPath());
+		assertEquals("/user/testuser", links.getLink("related").getUri().getPath());
 	}
 
 	@Test
@@ -63,11 +71,17 @@ public class PostResourceTest extends ResourceTest {
 		User user = getUserRepository().createUser("testuser", "Test User");
 		Post post = user.createPost("Test Post");
 		WebResource resource = postResource.path("testuser");
-		PostCollectionRepresentation rep = resource.get(PostCollectionRepresentation.class);
+		ClientResponse response = resource.get(ClientResponse.class);
+		PostCollectionRepresentation rep = response.getEntity(PostCollectionRepresentation.class);
 
 		// self-links must survive
 		assertEquals(resource.getURI().getPath(), rep.getSelf().getPath());
 		assertEquals(resource.path(post.getTimestamp().toString()).getURI().getPath(), rep.getPosts().iterator().next().getSelf().getPath());
+
+		// response must contain expected link headers
+		LinkHeaders links = response.getLinks();
+		assertEquals("/post/testuser", links.getLink("self").getUri().getPath());
+		assertEquals("/user/testuser", links.getLink("related").getUri().getPath());
 	}
 
 }

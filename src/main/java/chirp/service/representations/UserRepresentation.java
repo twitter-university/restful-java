@@ -8,8 +8,15 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 import chirp.model.User;
 
+import com.sun.jersey.server.linking.Link;
+import com.sun.jersey.server.linking.Links;
 import com.sun.jersey.server.linking.Ref;
 
+@Links({
+	@Link(value = @Ref("user/{username}"), rel = "self"),
+	@Link(value = @Ref("user"), rel = "up"),
+	@Link(value = @Ref("post/{username}"), rel = "related")
+})
 public class UserRepresentation {
 
 	@Ref("user/{username}")

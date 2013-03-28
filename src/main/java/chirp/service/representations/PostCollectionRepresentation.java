@@ -11,8 +11,14 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import chirp.model.Post;
 import chirp.model.User;
 
+import com.sun.jersey.server.linking.Link;
+import com.sun.jersey.server.linking.Links;
 import com.sun.jersey.server.linking.Ref;
 
+@Links({
+	@Link(value = @Ref("post/{username}"), rel = "self"),
+	@Link(value = @Ref("user/{username}"), rel = "related")
+})
 public class PostCollectionRepresentation {
 
 	@Ref("post/{username}")
