@@ -42,17 +42,20 @@ public class ResourceTest extends JerseyTest {
 	protected TestContainerFactory getTestContainerFactory() {
 		return new TestContainerFactory() {
 
+			@Override
 			@SuppressWarnings("unchecked")
 			public Class<LowLevelAppDescriptor> supports() {
 				return LowLevelAppDescriptor.class;
 			}
 
+			@Override
 			public TestContainer create(final URI baseUri,
 					final AppDescriptor ad) throws IllegalArgumentException {
 				return new TestContainer() {
 
 					private HttpServer server;
 
+					@Override
 					public void stop() {
 						if (server != null)
 							server.stop();
@@ -60,11 +63,13 @@ public class ResourceTest extends JerseyTest {
 						userRepository = null;
 					}
 
+					@Override
 					public void start() {
 						try {
 							ResourceConfig rc = new ClasspathResourceConfig();
 							userRepository = new UserRepository();
 							Injector injector = createInjector(new AbstractModule() {
+								@Override
 								protected void configure() {
 									bind(UserRepository.class).toInstance(userRepository);
 								}
@@ -76,10 +81,12 @@ public class ResourceTest extends JerseyTest {
 						}
 					}
 
+					@Override
 					public Client getClient() {
 						return null;
 					}
 
+					@Override
 					public URI getBaseUri() {
 						return baseUri;
 					}

@@ -1,7 +1,9 @@
 package chirp.service.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -15,6 +17,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import chirp.model.User;
 import chirp.model.UserRepository;
+import chirp.service.representations.UserRepresentation;
 
 import com.google.inject.Inject;
 
@@ -40,15 +43,18 @@ public class UsersResource {
 	@GET
 	@Path("{username}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User getUser(@PathParam("username") String username) {
-		return userRepository.getUser(username);
+	public UserRepresentation getUser(@PathParam("username") String username) {
+		return new UserRepresentation(userRepository.getUser(username));
 	}
 	
 	@GET
 	// @Path("all") -- optional, could be the root resource all
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<User> getUsers() {
-		return userRepository.getUsers();
+	public Collection<UserRepresentation> getUsers() {
+		Collection<UserRepresentation> ur = new ArrayList<UserRepresentation>();
+		for (User u: userRepository.getUsers())
+			ur.add(new UserRepresentation(u));
+		return Collections.unmodifiableCollection(ur);
 	}
 
 }

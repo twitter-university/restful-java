@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-import chirp.model.User;
+import chirp.service.representations.UserRepresentation;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -48,9 +48,9 @@ public class UsersResourceTest extends ResourceTest {
 	@Test
 	public void getUserShouldGetAUser() {
 		postUsersMustCreateUser();
-		User user = resource().path("users").path("testuser").get(User.class);
-		assertNotNull(user);
-		assertEquals("testuser",user.getUsername());
+		UserRepresentation ur = resource().path("users").path("testuser").get(UserRepresentation.class);
+		assertNotNull(ur);
+		assertEquals("testuser",ur.getUsername());
 	}
 
 	

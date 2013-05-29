@@ -19,7 +19,7 @@ import chirp.model.UserRepository;
 
 import com.google.inject.Inject;
 
-@Path("/posts")
+@Path("/posts/{username}")
 public class PostResource {
 
 	private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class PostResource {
 	}
 
 	@POST
-	public Response createPost(@FormParam("username") String username,
+	public Response createPost(@PathParam("username") String username,
 			@FormParam("content") String content) {
 			
 			Post post = userRepository.getUser(username).createPost(content);
@@ -39,14 +39,13 @@ public class PostResource {
 	}
 	
 	@GET
-	@Path("{username}/{timestamp}")
+	@Path("{timestamp}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Post getPost(@PathParam("username") String username, @PathParam("timestamp") String timestamp) {
 		return userRepository.getUser(username).getPost(new Timestamp(timestamp));
 	}
 	
 	@GET
-	@Path("{username}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<Post> getPosts(@PathParam("username") String username) {
 		return userRepository.getUser(username).getPosts();
