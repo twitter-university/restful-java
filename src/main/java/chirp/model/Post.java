@@ -2,6 +2,7 @@ package chirp.model;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
@@ -16,6 +17,7 @@ public class Post implements Serializable {
 	private final String content;
 	private final User user;
 
+	@JsonCreator
 	public Post(Timestamp timestamp, String content, User user) {
 		this.timestamp = timestamp;
 		this.content = content;

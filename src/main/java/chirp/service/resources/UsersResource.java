@@ -2,7 +2,6 @@ package chirp.service.resources;
 
 import java.net.URI;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
