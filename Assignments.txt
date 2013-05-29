@@ -1,0 +1,11 @@
+1. Create a "users" root resource
+  - Allow the client to POST to the resource
+  - Use @FormParam for username and realname properties
+  - Actually create a user
+  
+2. Implement Test Case
+
+3. Improve RESTful-ness
+  - return a 201 CREATED on success
+  - return a 403 FORBIDDEN  on failure
+  - implement test cases for 201 and 403 status codes
