@@ -14,19 +14,21 @@ import com.google.inject.Inject;
 
 @Path("/users")
 public class UsersResource {
-	
-	private UserRepository userRepository; 
-	
+
+	private UserRepository userRepository;
+
 	@Inject
 	public UsersResource(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
 	@POST
-	public Response createUser(@FormParam("username") String username, @FormParam("realname") String realname) {
-		userRepository.createUser(username, realname);
-		URI location = UriBuilder.fromPath(username).build();
-		return Response.created(location).build();
+	public Response createUser(@FormParam("username") String username,
+			@FormParam("realname") String realname) {
+
+			userRepository.createUser(username, realname);
+			URI location = UriBuilder.fromPath(username).build();
+			return Response.created(location).build();
 	}
-	
+
 }
