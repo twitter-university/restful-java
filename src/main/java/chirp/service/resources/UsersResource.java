@@ -25,7 +25,7 @@ public class UsersResource {
 	@POST
 	public Response createUser(@FormParam("username") String username, @FormParam("realname") String realname) {
 		userRepository.createUser(username, realname);
-		URI location = UriBuilder.fromPath("").path(username).build();
+		URI location = UriBuilder.fromPath(username).build();
 		return Response.created(location).build();
 	}
 	
