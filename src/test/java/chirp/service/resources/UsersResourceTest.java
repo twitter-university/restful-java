@@ -1,11 +1,14 @@
 package chirp.service.resources;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.junit.Test;
+
+import chirp.model.User;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -40,6 +43,14 @@ public class UsersResourceTest extends ResourceTest {
 
 		ClientResponse response = users.post(ClientResponse.class, getForm());
 		assertEquals(Response.Status.FORBIDDEN.getStatusCode(),response.getStatus());
+	}
+	
+	@Test
+	public void getUserShouldGetAUser() {
+		postUsersMustCreateUser();
+		User user = resource().path("users").path("testuser").get(User.class);
+		assertNotNull(user);
+		assertEquals("testuser",user.getUsername());
 	}
 
 	
