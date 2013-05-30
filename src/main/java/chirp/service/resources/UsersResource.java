@@ -47,6 +47,7 @@ public class UsersResource {
 		return new UserRepresentation(userRepository.getUser(username));
 	}
 	
+	
 	@GET
 	// @Path("all") -- optional, could be the root resource all
 	@Produces(MediaType.APPLICATION_JSON)

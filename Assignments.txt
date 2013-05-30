@@ -2,5 +2,5 @@ Finish Up Level Two Restful Java
 
 1. Create a PostRepresentations Class
 2. Create simple test cases for PostReprestnations in PostResourceTest
-3. Complete conversion of UserRsourceTest to UserRepresentation instead of User
+3. Complete conversion of UserResourceTest to UserRepresentation instead of User
   
