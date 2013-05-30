@@ -18,12 +18,13 @@ public class UserRepresentation {
 	private final String realname;
 	private final URI posts;
 
-	public UserRepresentation(User user) {
-		this.username = user.getUsername();
-		this.realname = user.getRealname();
-		this.self = UriBuilder.fromResource(UsersResource.class).path(username)
+	public UserRepresentation(User user, boolean summary) {
+		String tmpUsername = user.getUsername();
+		this.username = summary ? null : tmpUsername;
+		this.realname = summary ? null : user.getRealname();
+		this.self = UriBuilder.fromResource(UsersResource.class).path(tmpUsername)
 				.build();
-		this.posts = UriBuilder.fromResource(PostResource.class).build(username);
+		this.posts = UriBuilder.fromResource(PostResource.class).build(tmpUsername);
 	}
 
 	@JsonCreator

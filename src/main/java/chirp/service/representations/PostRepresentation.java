@@ -18,13 +18,13 @@ public class PostRepresentation {
 	private final String timestamp;
 	private final URI user;
 
-	public PostRepresentation(Post post) {
+	public PostRepresentation(Post post, boolean summary) {
 		String username = post.getUser().getUsername();
-		this.content = post.getContent();
-		this.timestamp = post.getTimestamp().toString();
+		this.content = summary ? null : post.getContent();
+		this.timestamp = summary ? null : post.getTimestamp().toString();
 		this.self = UriBuilder.fromResource(PostResource.class)
-				.path(this.timestamp).build(username);
-		this.user = UriBuilder.fromResource(UsersResource.class).path(username)
+				.path(post.getTimestamp().toString()).build(username);
+		this.user = summary ? null : UriBuilder.fromResource(UsersResource.class).path(username)
 				.build();
 	}
 

@@ -47,7 +47,7 @@ public class PostResource {
 	public PostRepresentation getPost(@PathParam("username") String username,
 			@PathParam("timestamp") String timestamp) {
 		return new PostRepresentation(userRepository.getUser(username).getPost(
-				new Timestamp(timestamp)));
+				new Timestamp(timestamp)),false);
 	}
 
 	@GET
@@ -56,7 +56,7 @@ public class PostResource {
 			@PathParam("username") String username) {
 		Collection<PostRepresentation> posts = new ArrayList<PostRepresentation>();
 		for (Post post : userRepository.getUser(username).getPosts())
-			posts.add(new PostRepresentation(post));
+			posts.add(new PostRepresentation(post,true));
 		return posts;
 	}
 

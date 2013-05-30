@@ -2,3 +2,9 @@
   
   self link  -- useful for accessing a particular instance within a collection.
   
+  Assignment
+  
+  Create a PostCollectionRepresentation and tie into PostResource.
+   - include a self link in the PCR
+   - include a single link to user 
+  
