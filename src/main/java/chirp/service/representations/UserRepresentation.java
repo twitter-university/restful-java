@@ -2,40 +2,38 @@ package chirp.service.representations;
 
 import java.net.URI;
 
-import javax.ws.rs.core.UriBuilder;
-
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import chirp.model.User;
-import chirp.service.resources.PostResource;
-import chirp.service.resources.UsersResource;
 
+import com.sun.jersey.server.linking.Link;
+import com.sun.jersey.server.linking.Links;
+import com.sun.jersey.server.linking.Ref;
+
+@Links({ @Link(value = @Ref("/posts/{username}"), rel = "related"),
+		@Link(value = @Ref("/users"), rel = "up"),
+		@Link(value = @Ref("/users/{username}"), rel = "self") })
 public class UserRepresentation {
 
-	private final URI self;
+	@Ref("/users/{username}")
+	private URI self;
 	private final String username;
 	private final String realname;
-	private final URI posts;
 
 	public UserRepresentation(User user, boolean summary) {
 		String tmpUsername = user.getUsername();
-		this.username = summary ? null : tmpUsername;
+		this.username = tmpUsername;
 		this.realname = summary ? null : user.getRealname();
-		this.self = UriBuilder.fromResource(UsersResource.class).path(tmpUsername)
-				.build();
-		this.posts = UriBuilder.fromResource(PostResource.class).build(tmpUsername);
 	}
 
 	@JsonCreator
 	public UserRepresentation(@JsonProperty("self") URI self,
 			@JsonProperty("username") String username,
-			@JsonProperty("realname") String realname,
-			@JsonProperty("posts") URI posts) {
+			@JsonProperty("realname") String realname) {
 		this.self = self;
 		this.username = username;
 		this.realname = realname;
-		this.posts = posts;
 	}
 
 	public String getUsername() {
@@ -48,10 +46,6 @@ public class UserRepresentation {
 
 	public URI getSelf() {
 		return self;
-	}
-
-	public URI getPosts() {
-		return posts;
 	}
 
 }
