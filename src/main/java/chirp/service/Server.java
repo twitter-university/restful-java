@@ -9,46 +9,48 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
+import org.glassfish.jersey.server.ResourceConfig;
 
 import chirp.model.UserRepository;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.sun.jersey.api.core.ClasspathResourceConfig;
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.guice.spi.container.GuiceComponentProviderFactory;
 
 /**
  * Lightweight, embedded HTTP server. Knows how to load and save the user
  * repository, and provide it for injection into resource classes.
  */
 public class Server {
+	
+    public static final String BASE_URI = "http://localhost:8080/";
+
 
 	private static final File userRepositoryFile = new File(
 			"user_repository.bin");
 
 	public static void main(String[] args) throws IOException {
-		// jersey must scan classpath for resources and providers
-		ResourceConfig rc = new ClasspathResourceConfig();
+		
+        final ResourceConfig rc = new ResourceConfig().packages("chirp");
+
+        // create and start a new instance of grizzly http server
+        // exposing the Jersey application at BASE_URI
+        HttpServer httpServer = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
 
 		// instantiate singleton user repository for injection
 		final UserRepository userRepository = thaw();
+
 		Injector injector = createInjector(new AbstractModule() {
 			protected void configure() {
 				bind(UserRepository.class).toInstance(userRepository);
 			}
 		});
 
-		// start server with guice injector
-		HttpServer server = createHttpServer("http://localhost:8080", rc,
-				new GuiceComponentProviderFactory(rc, injector));
-
 		// wait for shutdown ...
 		System.out.println("Hit <return> to stop server...");
 		System.in.read();
-		server.stop();
+		httpServer.shutdownNow();
 
 		// save state
 		freeze(userRepository);
