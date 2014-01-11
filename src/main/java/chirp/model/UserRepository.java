@@ -1,5 +1,11 @@
 package chirp.model;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Data access object for users. Note that the user repository also manages bulk
@@ -15,10 +21,45 @@ import java.util.TreeMap;
  */
 public class UserRepository implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2526248585736292013L;
 
-	private final Map<String, User> users = new TreeMap<String, User>();
+	private static UserRepository instance;
+
+	private static final File file = new File("state.bin");
+	private final Map<String, User> users;
+
 	private final List<Set<User>> bulkDeletions = new ArrayList<Set<User>>();
+
+	private UserRepository() {
+		users = thaw();
+	}
+
+	public static synchronized UserRepository getInstance() {
+		if (instance == null) {
+			instance = new UserRepository();
+		}
+
+		return instance;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Map<String, User> thaw() {
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(
+				file))) {
+			return (Map<String, User>) in.readObject();
+		} catch (Exception e) {
+			return new ConcurrentHashMap<String, User>();
+		}
+	}
+
+	public void freeze() {
+		try (ObjectOutputStream out = new ObjectOutputStream(
+				new FileOutputStream(file))) {
+			out.writeObject(users);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public User createUser(String username, String realname) {
 		if (users.containsKey(username))

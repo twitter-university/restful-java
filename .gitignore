@@ -3,3 +3,4 @@ user_repository.bin
 .classpath
 .project
 .settings
+/bin

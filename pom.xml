@@ -19,25 +19,15 @@
 			<artifactId>jersey-container-grizzly2-http</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>com.sun.jersey.contribs</groupId>
-			<artifactId>jersey-guice</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		-->
+		<!-- <dependency> <groupId>com.sun.jersey.contribs</groupId> <artifactId>jersey-guice</artifactId> 
+			<version>${jersey.version}</version> </dependency> -->
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jettison</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
-<!-- 
-		<dependency>
-			<groupId>com.sun.jersey</groupId>
-			<artifactId>jersey-server-linking</artifactId>
-			<version>${jersey.version}</version>
-		</dependency>
-		-->
+		<!-- <dependency> <groupId>com.sun.jersey</groupId> <artifactId>jersey-server-linking</artifactId> 
+			<version>${jersey.version}</version> </dependency> -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -45,10 +35,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<artifactId>jersey-test-framework-provider-inmemory</artifactId>
 			<version>${jersey.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
