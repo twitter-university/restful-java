@@ -1,7 +1,5 @@
 package chirp.service.resources;
 
-import java.lang.reflect.ParameterizedType;
-
 import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.server.ResourceConfig;
@@ -18,7 +16,7 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
  * @param <R>
  *            the jax-rs resource under test.
  */
-public abstract class JerseyResourceTest<R> extends JerseyTest {
+public abstract class JerseyResourceTest extends JerseyTest {
 
 	/**
 	 * Call this method to recreate a jersey test runtime with the following
@@ -43,15 +41,10 @@ public abstract class JerseyResourceTest<R> extends JerseyTest {
 		// Jersey uses java.util.logging - bridge to slf4
 		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
-
-		// create an instance of the parameterized declared class
-		@SuppressWarnings("unchecked")
-		final Class<R> resourceClass = (Class<R>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
-
+		
 		// ResourceConfig is a Jersey specific javax.ws.rs.core.Application
 		// subclass
-		return new ResourceConfig().register(resourceClass);
+		return new ResourceConfig().packages("chirp.service.resources");
 
 	}
 
