@@ -35,7 +35,7 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 	
-		final UserRepository users = UserRepository.getInstance(true);
+		// final UserRepository users = UserRepository.getInstance(true);
 		
 		// wait for shutdown ...
 		HttpServer httpServer = createServer();
@@ -49,7 +49,7 @@ public class Server {
 		httpServer.shutdownNow();
 
 		// save state
-		users.freeze();
+		// users.freeze();
 	}
 
 	
