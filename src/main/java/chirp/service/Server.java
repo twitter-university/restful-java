@@ -44,6 +44,19 @@ public class Server {
 				rc);
 	}
 
+	public static void resetAndSeedRepository() {
+		UserRepository database = UserRepository.getInstance();
+		database.clear();
+		database.createUser("maul", "Darth Maul");
+		database.createUser("luke", "Luke Skywaler");
+		database.createUser("vader", "Darth Vader");
+		database.createUser("yoda", "Master Yoda");
+		database.getUser("yoda").createChirp("Do or do not.  There is no try.", "wars01");
+		database.getUser("yoda")
+				.createChirp("Fear leads to anger, anger leads to hate, and hate leads to suffering.","wars02");
+		database.getUser("vader").createChirp("You have failed me for the last time.", "wars03");
+	}
+
 	public static void main(String[] args) throws IOException {
 	
 		// final UserRepository users = UserRepository.getInstance(true);
@@ -54,7 +67,7 @@ public class Server {
 				"Jersey app started with WADL available at "
 						+ "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
-
+		resetAndSeedRepository();
 		// System.out.println("Hit <return> to stop server...");
 		System.in.read();
 		httpServer.shutdownNow();

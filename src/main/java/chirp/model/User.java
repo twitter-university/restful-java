@@ -33,15 +33,25 @@ public class User implements Serializable {
 	}
 
 	public Chirp createChirp(String content) {
-		ChirpId id = new ChirpId();
-		if (chirps.containsKey(id))
+		ChirpId chirpId = new ChirpId();
+		if (chirps.containsKey(chirpId))
 			throw new DuplicateEntityException();
 
-		Chirp chirp = new Chirp(id, content, this);
-		chirps.put(id, chirp);
+		Chirp chirp = new Chirp(chirpId, content, this);
+		chirps.put(chirpId, chirp);
 		return chirp;
 	}
 
+	public Chirp createChirp(String content, String id) {
+		ChirpId chripId = new ChirpId(id);
+		if (chirps.containsKey(chripId))
+			throw new DuplicateEntityException();
+
+		Chirp chirp = new Chirp(chripId, content, this);
+		chirps.put(chripId, chirp);
+		return chirp;
+	}
+	
 	public Deque<Chirp> getChirps() {
 		return new LinkedList<Chirp>(chirps.values());
 	}
