@@ -23,16 +23,25 @@ public class Server {
 	public static final String BASE_URI = "http://localhost:8080/";
 
 	private static HttpServer createServer() {
-		
-		// Jersey uses java.util.logging - bridge to slf4
+		/* Jersey uses java.util.logging - bridge to slf4 */
 		SLF4JBridgeHandler.removeHandlersForRootLogger();
 		SLF4JBridgeHandler.install();
-		Logger.getLogger("org.glassfish.jersey.server.ServerRuntime$Responder").setLevel(Level.FINER);
-		Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler").setLevel(Level.FINE);
+		
+		/* Enable logging of exceptions while supressing chatty messages */
 		Logger.getLogger("org.glassfish.grizzly").setLevel(Level.FINER);
-
+		Logger.getLogger("org.glassfish.grizzly.nio").setLevel(Level.INFO);
+		Logger.getLogger("org.glassfish.grizzly.http.io").setLevel(Level.FINE);
+		Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler").setLevel(Level.FINE);
+		Logger.getLogger("org.glassfish.jersey.server.ServerRuntime$Responder").setLevel(Level.FINER);
+		Logger.getLogger("org.glassfish.jersey.tracing").setLevel(Level.FINEST);
+		
 		final ResourceConfig rc = new ResourceConfig()
 				.packages("chirp.service.resources");
+
+		/*
+		 * Allow additional debugging data in headers when in development. See:
+		 * https://jersey.java.net/documentation/latest/monitoring_tracing.html
+		 */
 		Map<String, Object> props = new HashMap<String, Object>();
 		props.put("jersey.config.server.tracing", "ALL");
 		props.put("jersey.config.server.tracing.threshold", "VERBOSE");
@@ -59,16 +68,20 @@ public class Server {
 
 	public static void main(String[] args) throws IOException {
 	
-		// final UserRepository users = UserRepository.getInstance(true);
+		resetAndSeedRepository();
 		
-		// wait for shutdown ...
 		HttpServer httpServer = createServer();
 		System.out.println(String.format(
 				"Jersey app started with WADL available at "
 						+ "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
-		resetAndSeedRepository();
-		// System.out.println("Hit <return> to stop server...");
+		Logger.getLogger("org.glassfish.jersey.server.ServerRuntime$Responder").setLevel(Level.FINEST);
+		Logger.getLogger("org.glassfish.grizzly").setLevel(Level.FINER);
+		Logger.getLogger("org.glassfish.grizzly.nio").setLevel(Level.INFO);
+		Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler").setLevel(Level.FINE);
+
+		// wait for shutdown ...
+		System.out.println("Hit <return> to stop server...");
 		System.in.read();
 		httpServer.shutdownNow();
 
