@@ -75,10 +75,6 @@ public class Server {
 				"Jersey app started with WADL available at "
 						+ "%sapplication.wadl\nHit enter to stop it...",
 				BASE_URI));
-		Logger.getLogger("org.glassfish.jersey.server.ServerRuntime$Responder").setLevel(Level.FINEST);
-		Logger.getLogger("org.glassfish.grizzly").setLevel(Level.FINER);
-		Logger.getLogger("org.glassfish.grizzly.nio").setLevel(Level.INFO);
-		Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler").setLevel(Level.FINE);
 
 		// wait for shutdown ...
 		System.out.println("Hit <return> to stop server...");
