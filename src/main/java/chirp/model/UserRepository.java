@@ -3,6 +3,7 @@ package chirp.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class UserRepository implements Serializable {
 	}
 
 	public Collection<User> getUsers() {
-		return new ArrayList<User>(users.values());
+		return Collections.unmodifiableCollection(new ArrayList<User>(users.values()));
 	}
 
 	public User getUser(String username) {

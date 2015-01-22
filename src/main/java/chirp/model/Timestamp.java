@@ -23,6 +23,10 @@ public class Timestamp implements Comparable<Timestamp>, Serializable {
 		this(DateTimeFormat.forPattern("yyyyMMddHHmmss").print(new DateTime()));
 	}
 
+	public String getTimestamp() {
+		return timestamp;
+	}
+
 	@Override
 	public int compareTo(Timestamp other) {
 		return timestamp.compareTo(other.timestamp);

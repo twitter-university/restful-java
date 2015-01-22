@@ -36,6 +36,7 @@ public class Server {
 		// instantiate singleton user repository for injection
 		final UserRepository userRepository = thaw();
 		Injector injector = createInjector(new AbstractModule() {
+			@Override
 			protected void configure() {
 				bind(UserRepository.class).toInstance(userRepository);
 			}
