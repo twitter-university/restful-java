@@ -63,7 +63,47 @@ public class UserResourceTest extends ResourceTestSupport {
 		String realName = response.readEntity(String.class);
 		Assert.assertEquals("Master Yoda", realName);
 	}
+
+	@Test
+	public void testCreateDuplicateUser() {
+    String username = "mickeym";
+    String realName = "Mickey Mouse";
+
+    Form user = new Form().param("realName", realName);
+    Entity entity = Entity.form(user);
+
+    Response response = target("/users").path(username)
+    		.request()
+    		.accept(MediaType.TEXT_PLAIN)
+    		.put(entity);
+
+    Assert.assertEquals(201, response.getStatus());
+		
+    response = target("/users").path(username)
+    		.request()
+    		.accept(MediaType.TEXT_PLAIN)
+    		.put(entity);
+
+    Assert.assertEquals(403, response.getStatus());
+	}
+
+	@Test
+	public void testGetWrongUser() {
+		Response response = target("/users/donald.duck").request().get();
+    Assert.assertEquals(404, response.getStatus());
+	}
+
+	@Test
+	public void testCreateWithBadName() {
+	  Form user = new Form().param("realName", "Minnie Mouse");
+	  Entity entity = Entity.form(user);
+
+	  Response response = target("/users").path("minnie mouse").request().put(entity);
+
+	  Assert.assertEquals(400, response.getStatus());
+	}
 }
+
 
 
 

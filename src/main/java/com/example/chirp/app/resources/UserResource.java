@@ -2,16 +2,14 @@ package com.example.chirp.app.resources;
 
 import java.net.URI;
 
-import javax.ws.rs.FormParam;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import com.example.chirp.app.ChirpApplication;
 import com.example.chirp.app.kernel.User;
@@ -24,14 +22,13 @@ public class UserResource {
 	
 	@PUT
 	@Path("/{username}")
-	public Response createUser(@PathParam("username") String username,
-												     @FormParam("realName") String realName,
-												     @Context UriInfo uriInfo) {
+	public Response createUser(@BeanParam CreateUserRequest request) {
+
+		request.validate();
 		
-		userStore.createUser(username, realName);
-		URI location = uriInfo.getAbsolutePathBuilder().build();
-		// location = uriInfo.getBaseUriBuilder().path("users").path(username).build();
-		// location = uriInfo.getAbsolutePath();
+		userStore.createUser(request.username, request.realName);
+		URI location = request.uriInfo.getBaseUriBuilder()
+				.path("users").path(request.username).build();
 		
 		return Response.created(location).build();
 	}
