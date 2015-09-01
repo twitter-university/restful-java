@@ -5,15 +5,20 @@ import java.util.Set;
 
 import javax.ws.rs.core.Application;
 
+import com.example.chirp.app.resources.GreetingsResource;
+import com.example.chirp.app.resources.RootResource;
+
 //@ApplicationPath("/")
 public class ChirpApplication extends Application {
-private Set<Class<?>> classes = new HashSet<>();
+	private Set<Class<?>> classes = new HashSet<>();
+	
+	public ChirpApplication() {
+		 classes.add(RootResource.class);
+		 classes.add(GreetingsResource.class);
+	}
 
-public ChirpApplication() {
- classes.add(RootResource.class);
-}
-@Override
-public Set<Class<?>> getClasses() {
- return classes;
-}
+	@Override
+	public Set<Class<?>> getClasses() {
+	 return classes;
+	}
 }

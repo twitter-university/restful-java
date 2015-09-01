@@ -1,4 +1,4 @@
-package com.example.chirp.app;
+package com.example.chirp.app.resources;
 
 import java.text.SimpleDateFormat;
 
@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 @Path("/")
 public class RootResource {
 
-  @GET
+  @GET	
   @Produces(MediaType.TEXT_PLAIN)
   public String getStatus() {
     java.util.Date now = new java.util.Date();
