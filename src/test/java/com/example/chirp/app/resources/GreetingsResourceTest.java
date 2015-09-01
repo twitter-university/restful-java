@@ -24,7 +24,17 @@ public class GreetingsResourceTest extends ResourceTestSupport {
 		String content = response.readEntity(String.class);
 		Assert.assertEquals("Hello Tom!", content);
 	}
+
+	@Test
+	public void testSayHelloWithPathParam() {
+		Response response = target("/greetings").path("Tom Jones").request().get();
+		Assert.assertEquals(200, response.getStatus());
+
+		String content = response.readEntity(String.class);
+		Assert.assertEquals("Hello Tom Jones!", content);
+	}
 }
+
 
 
 
