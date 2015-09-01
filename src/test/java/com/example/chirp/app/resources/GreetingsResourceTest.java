@@ -13,6 +13,22 @@ public class GreetingsResourceTest extends ResourceTestSupport {
 		Assert.assertEquals(200, response.getStatus());
 
 		String content = response.readEntity(String.class);
-		Assert.assertEquals("Hello!", content);
+		Assert.assertEquals("Hello dude!", content);
+	}
+
+	@Test
+	public void testSayHelloWithQueryParam() {
+		Response response = target("/greetings").queryParam("name", "Tom").request().get();
+		Assert.assertEquals(200, response.getStatus());
+
+		String content = response.readEntity(String.class);
+		Assert.assertEquals("Hello Tom!", content);
 	}
 }
+
+
+
+
+
+
+
