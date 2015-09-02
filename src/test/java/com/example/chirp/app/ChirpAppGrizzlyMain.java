@@ -51,7 +51,7 @@ public class ChirpAppGrizzlyMain {
 	private final ReentrantLock handlerLock = new ReentrantLock();
 
 	public static void main(String[] args) throws Exception {
-		 LogbackUtil.initLogback(Level.WARN);
+		 LogbackUtil.initLogback(Level.INFO);
 
 		new ChirpAppGrizzlyMain().start();
 	}

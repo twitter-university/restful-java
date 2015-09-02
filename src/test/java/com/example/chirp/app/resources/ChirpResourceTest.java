@@ -2,12 +2,14 @@ package com.example.chirp.app.resources;
 
 import java.net.URI;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.example.chirp.app.kernel.Chirp;
 import com.example.chirp.app.pub.PubChirp;
 
 public class ChirpResourceTest extends ResourceTestSupport {
@@ -34,6 +36,25 @@ public class ChirpResourceTest extends ResourceTestSupport {
     URI userLink = URI.create("http://localhost:9998/users/yoda");
     Assert.assertEquals(userLink, pubChirp.get_links().get("user"));
     Assert.assertEquals(userLink, response.getLink("user").getUri());
+  }
+
+  @Test
+  public void testCreateChirp() {
+    Entity<String> entity = Entity.text("Test I will.");
+    Response response = target("/users/yoda/chirps").request().post(entity);
+  
+    Assert.assertEquals(201, response.getStatus());
+    
+    String location = response.getHeaderString("Location");
+    Assert.assertTrue(location.startsWith("http://localhost:9998/chirps/"));
+    
+    Chirp chirp = getUserStore().getUser("yoda").getChirps().getFirst();
+    Assert.assertEquals("Test I will.", chirp.getContent());
+
+    String shortLocation = location.substring(21);
+    response = target(shortLocation).request().get();
+    PubChirp pubChirp = response.readEntity(PubChirp.class);
+    Assert.assertEquals("Test I will.", pubChirp.getContent());
   }
 }
 

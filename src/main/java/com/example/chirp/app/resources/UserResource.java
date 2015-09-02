@@ -20,13 +20,13 @@ import com.example.chirp.app.pub.PubUser;
 import com.example.chirp.app.pub.PubUtils;
 import com.example.chirp.app.stores.UserStore;
 
-@Path("/users")
+@Path("/")
 public class UserResource {
 
 	private UserStore userStore = ChirpApplication.USER_STORE;
 	
 	@PUT
-	@Path("/{username}")
+	@Path("/users/{username}")
 	public Response createUser(@BeanParam CreateUserRequest request) {
 
 		request.validate();
@@ -39,7 +39,7 @@ public class UserResource {
 	}
 
   @GET
-  @Path("/{username}")
+  @Path("/users/{username}")
   @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
   public Response getUserPlainJsonOrXml(@PathParam("username") String username,
                              @Context UriInfo uriInfo) {

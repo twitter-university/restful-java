@@ -7,9 +7,10 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PubChirp {
-  private final Map<String,URI> _links = new LinkedHashMap<>();
+
   private final String id;
   private final String content;
+  private final Map<String,URI> _links = new LinkedHashMap<>();
   
   public PubChirp(@JsonProperty("_links") Map<String,URI> _links,
                   @JsonProperty("id") String id,
