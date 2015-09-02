@@ -8,6 +8,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,12 +42,16 @@ public class UserResource {
   @GET
   @Path("/users/{username}")
   @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-  public Response getUserPlainJsonOrXml(@PathParam("username") String username,
-                             @Context UriInfo uriInfo) {
+  public Response getUser(@PathParam("username") String username,
+                          @Context UriInfo uriInfo,
+                          @QueryParam("limitString") String limitString, 
+                          @QueryParam("offsetString") String offsetString) {
 
     User user = userStore.getUser(username);
-    PubUser pubUser = PubUtils.toPubUser(uriInfo, user);
+    PubUser pubUser = PubUtils.toPubUser(uriInfo, user, limitString, offsetString);
   
+    
+    
     ResponseBuilder builder = Response.ok(pubUser);
     PubUtils.addLinks(builder, pubUser.get_links());
     return builder.build();

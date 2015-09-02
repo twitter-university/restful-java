@@ -28,7 +28,10 @@ public class PubChirps {
     this.offset = offset;
     this.total = total;
     this.count = count;
-    this._links.putAll(_links);
+    
+    if (_links != null) {
+      this._links.putAll(_links);
+    }
   }
 
   public List<PubChirp> getItems() { return items; }

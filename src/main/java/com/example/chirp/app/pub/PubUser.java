@@ -12,13 +12,21 @@ public class PubUser {
   private final String username;
   private final String realName;
  
+  private final PubChirps chirps;
+  
   public PubUser(@JsonProperty("_links") Map<String,URI> _links, 
                  @JsonProperty("username") String username, 
-                 @JsonProperty("realName") String realName) {
+                 @JsonProperty("realName") String realName,
+                 @JsonProperty("chirps") PubChirps chirps) {
 
     this.username = username;
     this.realName = realName;
     this._links.putAll(_links);
+    this.chirps = chirps;
+  }
+
+  public PubChirps getChirps() {
+    return chirps;
   }
   
   public String getUsername() { return username; }

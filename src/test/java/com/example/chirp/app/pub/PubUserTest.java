@@ -18,7 +18,7 @@ public class PubUserTest {
     Map<String,URI> links = new LinkedHashMap<>();
     links.put("self", URI.create("http://whatever/a"));
     links.put("chirps", URI.create("http://whatever/b"));
-    PubUser oldUser = new PubUser(links, "mickey", "Mickey Mouse");
+    PubUser oldUser = new PubUser(links, "mickey", "Mickey Mouse", null);
 
     String json = mapper.writeValueAsString(oldUser);
     PubUser newUser = mapper.readValue(json, PubUser.class);
@@ -35,7 +35,7 @@ public class PubUserTest {
     Map<String,URI> links = new LinkedHashMap<>();
     links.put("self", URI.create("http://whatever/a"));
     links.put("chirps", URI.create("http://whatever/b"));
-    PubUser oldUser = new PubUser(links, "mickey", "Mickey Mouse");
+    PubUser oldUser = new PubUser(links, "mickey", "Mickey Mouse", null);
 
     String json = mapper.writeValueAsString(oldUser);
     PubUser newUser = mapper.readValue(json, PubUser.class);

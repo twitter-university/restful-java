@@ -11,7 +11,7 @@ public class PubUtilsTest {
   @Test  
   public void testToPubUser() {
     User user = new User("mickey", "Mickey Mouse");
-    PubUser pubUser = PubUtils.toPubUser(new MockUriInfo(), user);
+    PubUser pubUser = PubUtils.toPubUser(new MockUriInfo(), user, "5", "0");
 
     Assert.assertEquals(user.getUsername(), pubUser.getUsername());
     Assert.assertEquals(user.getRealName(), pubUser.getRealName());
