@@ -15,6 +15,7 @@ public class PubUtilsTest {
 
     Assert.assertEquals(user.getUsername(), pubUser.getUsername());
     Assert.assertEquals(user.getRealName(), pubUser.getRealName());
+   
     Assert.assertEquals(URI.create("http://mock.com/users/mickey"),
                         pubUser.get_links().get("self"));
 

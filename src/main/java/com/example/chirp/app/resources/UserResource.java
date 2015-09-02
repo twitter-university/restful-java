@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import com.example.chirp.app.ChirpApplication;
@@ -39,23 +40,32 @@ public class UserResource {
 
   @GET
   @Path("/{username}")
-  @Produces(MediaType.TEXT_PLAIN)
-  public String getUserPlain(@PathParam("username") String username) {
-    User user = userStore.getUser(username);
-    String realName = user.getRealName();
-    return realName;
-  }
-
-  @GET
-  @Path("/{username}")
-  @Produces(MediaType.APPLICATION_JSON)
-  public PubUser getUserJson(@PathParam("username") String username,
+  @Produces({MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  public Response getUserPlainJsonOrXml(@PathParam("username") String username,
                              @Context UriInfo uriInfo) {
 
     User user = userStore.getUser(username);
-    return PubUtils.toPubUser(uriInfo, user);
+    PubUser pubUser = PubUtils.toPubUser(uriInfo, user);
+  
+    ResponseBuilder builder = Response.ok(pubUser);
+    PubUtils.addLinks(builder, pubUser.get_links());
+    return builder.build();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

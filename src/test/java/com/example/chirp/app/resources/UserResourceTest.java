@@ -84,13 +84,86 @@ public class UserResourceTest extends ResourceTestSupport {
 
     URI selfLink = URI.create("http://localhost:9998/users/yoda");
     Assert.assertEquals(selfLink, pubUser.get_links().get("self"));
+    Assert.assertEquals(selfLink, response.getLink("self").getUri());
 
     URI chirpsLink = URI.create("http://localhost:9998/users/yoda/chirps");
     Assert.assertEquals(chirpsLink, pubUser.get_links().get("chirps"));
-    
+    Assert.assertEquals(chirpsLink, response.getLink("chirps").getUri());
+
   }
 
-	@Test
+  @Test 
+  public void testGetUserXml() {
+    UserStoreUtils.resetAndSeedRepository(getUserStore());
+
+    Response response = target("/users/yoda")
+        .request()
+        .accept(MediaType.APPLICATION_XML)
+        .get();
+    
+    Assert.assertEquals(200, response.getStatus());
+    
+    PubUser pubUser = response.readEntity(PubUser.class);
+    Assert.assertEquals("yoda", pubUser.getUsername());
+    Assert.assertEquals("Master Yoda", pubUser.getRealName());
+
+    URI selfLink = URI.create("http://localhost:9998/users/yoda");
+    Assert.assertEquals(selfLink, pubUser.get_links().get("self"));
+    Assert.assertEquals(selfLink, response.getLink("self").getUri());
+
+    URI chirpsLink = URI.create("http://localhost:9998/users/yoda/chirps");
+    Assert.assertEquals(chirpsLink, pubUser.get_links().get("chirps"));
+    Assert.assertEquals(chirpsLink, response.getLink("chirps").getUri());
+
+  }
+
+  @Test 
+  public void testGetUserXmlExt() {
+    UserStoreUtils.resetAndSeedRepository(getUserStore());
+
+    Response response = target("/users/yoda.xml")
+        .request()
+        .accept("image/png")
+        .get();
+    
+    Assert.assertEquals(200, response.getStatus());
+
+    MediaType type = response.getMediaType();
+    Assert.assertEquals(MediaType.APPLICATION_XML_TYPE, type);
+  }
+
+  @Test 
+  public void testGetUserJsonExt() {
+    UserStoreUtils.resetAndSeedRepository(getUserStore());
+
+    Response response = target("/users/yoda.json")
+        .request()
+        .accept("image/png")
+        .get();
+    
+    Assert.assertEquals(200, response.getStatus());
+
+    MediaType type = response.getMediaType();
+    Assert.assertEquals(MediaType.APPLICATION_JSON_TYPE, type);
+  }
+
+
+  @Test 
+  public void testGetUserPlainExt() {
+    UserStoreUtils.resetAndSeedRepository(getUserStore());
+
+    Response response = target("/users/yoda.txt")
+        .request()
+        .accept("image/png")
+        .get();
+    
+    Assert.assertEquals(200, response.getStatus());
+
+    MediaType type = response.getMediaType();
+    Assert.assertEquals(MediaType.TEXT_PLAIN_TYPE, type);
+  }
+
+  @Test
 	public void testCreateDuplicateUser() {
     String username = "mickeym";
     String realName = "Mickey Mouse";
