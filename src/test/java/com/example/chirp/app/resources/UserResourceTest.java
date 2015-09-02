@@ -1,5 +1,7 @@
 package com.example.chirp.app.resources;
 
+import java.net.URI;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
@@ -9,6 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.example.chirp.app.pub.PubUser;
 import com.example.chirp.app.stores.UserStoreUtils;
 
 
@@ -49,20 +52,43 @@ public class UserResourceTest extends ResourceTestSupport {
     Assert.assertEquals(realName, actualName);
 	}
 
-	@Test 
-	public void testGetUser() {
-		UserStoreUtils.resetAndSeedRepository(getUserStore());
+  @Test 
+  public void testGetUserPlain() {
+    UserStoreUtils.resetAndSeedRepository(getUserStore());
 
-		Response response = target("/users/yoda")
-				.request()
-				.accept(MediaType.TEXT_PLAIN)
-				.get();
-		
-		Assert.assertEquals(200, response.getStatus());
-		
-		String realName = response.readEntity(String.class);
-		Assert.assertEquals("Master Yoda", realName);
-	}
+    Response response = target("/users/yoda")
+        .request()
+        .accept(MediaType.TEXT_PLAIN)
+        .get();
+    
+    Assert.assertEquals(200, response.getStatus());
+    
+    String realName = response.readEntity(String.class);
+    Assert.assertEquals("Master Yoda", realName);
+  }
+
+  @Test 
+  public void testGetUserJson() {
+    UserStoreUtils.resetAndSeedRepository(getUserStore());
+
+    Response response = target("/users/yoda")
+        .request()
+        .accept(MediaType.APPLICATION_JSON)
+        .get();
+    
+    Assert.assertEquals(200, response.getStatus());
+    
+    PubUser pubUser = response.readEntity(PubUser.class);
+    Assert.assertEquals("yoda", pubUser.getUsername());
+    Assert.assertEquals("Master Yoda", pubUser.getRealName());
+
+    URI selfLink = URI.create("http://localhost:9998/users/yoda");
+    Assert.assertEquals(selfLink, pubUser.get_Links().get("self"));
+
+    URI chirpsLink = URI.create("http://localhost:9998/users/yoda/chirps");
+    Assert.assertEquals(chirpsLink, pubUser.get_Links().get("chirps"));
+    
+  }
 
 	@Test
 	public void testCreateDuplicateUser() {
