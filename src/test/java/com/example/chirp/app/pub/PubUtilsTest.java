@@ -1,6 +1,7 @@
 package com.example.chirp.app.pub;
 
 import java.net.URI;
+import java.util.ArrayList;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +12,11 @@ public class PubUtilsTest {
   @Test  
   public void testToPubUser() {
     User user = new User("mickey", "Mickey Mouse");
-    PubUser pubUser = PubUtils.toPubUser(new MockUriInfo(), user, "5", "0");
+    
+    PubUser pubUser = PubUtils.toPubUser(
+        new MockUriInfo(), 
+        user, "5", "0", 
+        new ArrayList<String>());
 
     Assert.assertEquals(user.getUsername(), pubUser.getUsername());
     Assert.assertEquals(user.getRealName(), pubUser.getRealName());

@@ -138,7 +138,12 @@ public class PubUtils {
     return builder;
   }
   
-  public static PubUser toPubUser(UriInfo uriInfo, User user, String limitString, String offsetString) {
+  public static PubUser toPubUser(UriInfo uriInfo, 
+                                  User user, 
+                                  String limitString, 
+                                  String offsetString,
+                                  List<String> includes) {
+    
     Map<String,URI> links = new LinkedHashMap<>();
 
     URI selfLink = uriInfo.getBaseUriBuilder().path("users").path(user.getUsername()).build();
@@ -147,7 +152,10 @@ public class PubUtils {
     links.put("chirps", uriInfo.getBaseUriBuilder()
       .path("users").path(user.getUsername()).path("chirps").build());
 
-    PubChirps pubChirps = toPubChirps(uriInfo, user, limitString, offsetString);
+    PubChirps pubChirps = null;
+    if (includes.contains("chirps")) {
+      pubChirps = toPubChirps(uriInfo, user, limitString, offsetString);
+    }
     
     return new PubUser(links, user.getUsername(), user.getRealName(), pubChirps);
   }

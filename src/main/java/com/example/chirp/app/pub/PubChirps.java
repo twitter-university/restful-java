@@ -16,7 +16,7 @@ public class PubChirps {
   private final List<PubChirp> items;
   private final Map<String,URI> _links = new LinkedHashMap<>();
 
-  public PubChirps(@JsonProperty("links") Map<String,URI> _links,
+  public PubChirps(@JsonProperty("_links") Map<String,URI> _links,
                    @JsonProperty("chirps") List<PubChirp> chirps,
                    @JsonProperty("limit") int limit,
                    @JsonProperty("offset") int offset,
@@ -29,9 +29,7 @@ public class PubChirps {
     this.total = total;
     this.count = count;
     
-    if (_links != null) {
-      this._links.putAll(_links);
-    }
+    this._links.putAll(_links);
   }
 
   public List<PubChirp> getItems() { return items; }

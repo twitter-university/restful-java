@@ -1,6 +1,7 @@
 package com.example.chirp.app.resources;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
@@ -45,12 +46,11 @@ public class UserResource {
   public Response getUser(@PathParam("username") String username,
                           @Context UriInfo uriInfo,
                           @QueryParam("limitString") String limitString, 
-                          @QueryParam("offsetString") String offsetString) {
+                          @QueryParam("offsetString") String offsetString,
+                          @QueryParam("include") List<String> includes) {
 
     User user = userStore.getUser(username);
-    PubUser pubUser = PubUtils.toPubUser(uriInfo, user, limitString, offsetString);
-  
-    
+    PubUser pubUser = PubUtils.toPubUser(uriInfo, user, limitString, offsetString, includes);
     
     ResponseBuilder builder = Response.ok(pubUser);
     PubUtils.addLinks(builder, pubUser.get_links());
