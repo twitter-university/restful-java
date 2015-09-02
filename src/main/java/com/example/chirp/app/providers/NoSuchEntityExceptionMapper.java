@@ -19,10 +19,6 @@ public class NoSuchEntityExceptionMapper implements ExceptionMapper<NoSuchEntity
 
 	@Context UriInfo uriInfo;
 	
-	public NoSuchEntityExceptionMapper(Class type, String id) {
-	  super("The entity " + type.getSimpleName() + " (" +id +") does not exsit");
-	}
-	
   @Override
   public Response toResponse(NoSuchEntityException exception) {
     ExceptionInfo info = new ExceptionInfo(404, exception);
