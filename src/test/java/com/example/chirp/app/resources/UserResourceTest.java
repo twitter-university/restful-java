@@ -83,10 +83,10 @@ public class UserResourceTest extends ResourceTestSupport {
     Assert.assertEquals("Master Yoda", pubUser.getRealName());
 
     URI selfLink = URI.create("http://localhost:9998/users/yoda");
-    Assert.assertEquals(selfLink, pubUser.get_Links().get("self"));
+    Assert.assertEquals(selfLink, pubUser.get_links().get("self"));
 
     URI chirpsLink = URI.create("http://localhost:9998/users/yoda/chirps");
-    Assert.assertEquals(chirpsLink, pubUser.get_Links().get("chirps"));
+    Assert.assertEquals(chirpsLink, pubUser.get_links().get("chirps"));
     
   }
 
