@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PubUser {
@@ -12,6 +14,7 @@ public class PubUser {
   private final String username;
   private final String realName;
  
+  @JsonInclude(Include.NON_NULL)
   private final PubChirps chirps;
   
   public PubUser(@JsonProperty("_links") Map<String,URI> _links, 
